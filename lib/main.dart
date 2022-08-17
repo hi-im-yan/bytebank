@@ -11,7 +11,7 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FormularioTransferencia(),
+        body: ListaTransferencia(),
       ),
     );
   }
@@ -49,8 +49,7 @@ class FormularioTransferencia extends StatelessWidget {
   }
 
   void _criaTransferencia(BuildContext context) {
-    final int? numeroConta =
-        int.tryParse(_numeroContaController.text);
+    final int? numeroConta = int.tryParse(_numeroContaController.text);
     final double? valor = double.tryParse(_valorController.text);
 
     if (numeroConta != null && valor != null) {
@@ -61,6 +60,8 @@ class FormularioTransferencia extends StatelessWidget {
           content: Text('$transferenciaCriada'),
         ),
       );
+      
+      Navigator.pop(context, transferenciaCriada);
     }
   }
 }
@@ -96,22 +97,29 @@ class Editor extends StatelessWidget {
 }
 
 class ListaTransferencia extends StatelessWidget {
+
+  final List<Transferencia> _transferencias = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transferências'),
       ),
-      body: Column(
-        children: [
-          ItemTransferencia(Transferencia(100.0, 1000)),
-          ItemTransferencia(Transferencia(200.50, 1001)),
-          ItemTransferencia(Transferencia(300.99, 1002)),
-        ],
+      body: ListView.builder(
+        itemCount: _transferencias.length,
+        itemBuilder: (context, index) {
+          final transferencia = _transferencias[index];
+          return ItemTransferencia(transferencia);
+        },
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
           print("Botao pressionado");
+          Future future = Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return FormularioTransferencia();
+          }));
+          future.then((transferenciaRecebida) => debugPrint('$transferenciaRecebida'));
         },
         child: Icon(Icons.add),
       ),
