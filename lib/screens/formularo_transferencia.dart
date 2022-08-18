@@ -33,11 +33,13 @@ class FormularioTransferenciaState extends State<FormularioTransferencia> {
               Editor(
                 controller: _numeroContaController,
                 label: _labelCampoConta,
+                keyboarType: TextInputType.number,
                 hint: _hintCampoConta,
               ),
               Editor(
                 controller: _valorController,
                 label: _labelCampoValor,
+                keyboarType: TextInputType.number,
                 hint: _hintCampoValor,
                 icon: Icons.monetization_on,
               ),

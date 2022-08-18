@@ -1,4 +1,5 @@
 import 'package:bytebank/screens/dashboard.dart';
+import 'package:bytebank/screens/formulario_contato.dart';
 import 'package:bytebank/screens/lista_contatos.dart';
 import 'package:bytebank/screens/lista_transferencia.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class BytebankApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Dashboard(),
+      home: FormularioContato(),
     );
   }
 }
