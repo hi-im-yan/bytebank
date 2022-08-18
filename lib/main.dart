@@ -10,15 +10,22 @@ class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: ListaTransferencia(),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          color: Colors.green[900],
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.teal),
+          ),
+        ),
       ),
+      home: ListaTransferencia(),
     );
   }
 }
 
 class FormularioTransferencia extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return FormularioTransferenciaState();
@@ -138,7 +145,9 @@ class ListaTransferenciaState extends State<ListaTransferencia> {
             return FormularioTransferencia();
           }));
           future.then((transferenciaRecebida) {
-            setState(() => widget._transferencias.add(transferenciaRecebida));
+            if (transferenciaRecebida != null) {
+              setState(() => widget._transferencias.add(transferenciaRecebida));
+            }
           });
         },
       ),
