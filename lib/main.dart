@@ -96,10 +96,17 @@ class Editor extends StatelessWidget {
   }
 }
 
-class ListaTransferencia extends StatelessWidget {
+class ListaTransferencia extends StatefulWidget {
 
-  final List<Transferencia> _transferencias = [];
+  List<Transferencia> _transferencias = [];
 
+  @override
+  State<StatefulWidget> createState() {
+    return ListaTransferenciaState();
+  }
+}
+
+class ListaTransferenciaState extends State<ListaTransferencia> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,21 +114,23 @@ class ListaTransferencia extends StatelessWidget {
         title: Text('Transferências'),
       ),
       body: ListView.builder(
-        itemCount: _transferencias.length,
+        itemCount: widget._transferencias.length,
         itemBuilder: (context, index) {
-          final transferencia = _transferencias[index];
+          final transferencia = widget._transferencias[index];
           return ItemTransferencia(transferencia);
         },
       ),
       floatingActionButton: ElevatedButton(
+        child: Icon(Icons.add),
         onPressed: () {
           print("Botao pressionado");
-          Future future = Navigator.push(context, MaterialPageRoute(builder: (context) {
+          final Future future = Navigator.push(context, MaterialPageRoute(builder: (context) {
             return FormularioTransferencia();
           }));
-          future.then((transferenciaRecebida) => debugPrint('$transferenciaRecebida'));
+          future.then((transferenciaRecebida) {
+            setState(() => widget._transferencias.add(transferenciaRecebida));
+          });
         },
-        child: Icon(Icons.add),
       ),
     );
   }
@@ -137,8 +146,8 @@ class ItemTransferencia extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: Icon(Icons.monetization_on),
-        title: Text(_transferencia.valor.toString()),
-        subtitle: Text(_transferencia.numeroConta.toString()),
+        title: Text('R\$ ' + _transferencia.valor.toString()),
+        subtitle: Text('Transferido para: ' + _transferencia.numeroConta.toString()),
       ),
     );
   }
