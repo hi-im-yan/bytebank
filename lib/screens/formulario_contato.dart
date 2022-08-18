@@ -1,9 +1,15 @@
 import 'package:bytebank/components/editor.dart';
+import 'package:bytebank/models/contato.dart';
 import 'package:flutter/material.dart';
 
-class FormularioContato extends StatelessWidget {
+class FormularioContato extends StatefulWidget {
   FormularioContato({Key? key}) : super(key: key);
 
+  @override
+  State<FormularioContato> createState() => _FormularioContatoState();
+}
+
+class _FormularioContatoState extends State<FormularioContato> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _numeroContaController = TextEditingController();
 
@@ -35,7 +41,13 @@ class FormularioContato extends StatelessWidget {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final String nome = _nomeController.text;
+                      final int numeroConta = int.parse(_numeroContaController.text);
+
+                      final Contato contato = Contato(nome, numeroConta);
+                      Navigator.pop(context, contato);
+                    },
                     child: const Text('SALVAR'),
                   ),
                 ),

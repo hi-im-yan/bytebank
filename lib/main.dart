@@ -24,7 +24,7 @@ class BytebankApp extends StatelessWidget {
           ),
         ),
       ),
-      home: FormularioContato(),
+      home: Dashboard(),
     );
   }
 }
