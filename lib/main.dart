@@ -1,11 +1,15 @@
+import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
 import 'package:bytebank/screens/lista_contatos.dart';
 import 'package:bytebank/screens/lista_transferencia.dart';
 import 'package:flutter/material.dart';
 
+import 'database/app_database.dart';
+
 void main() {
   runApp(const BytebankApp());
+  findAll().then((contatos) => debugPrint(contatos.toString()));
 }
 
 class BytebankApp extends StatelessWidget {

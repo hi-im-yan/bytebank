@@ -45,7 +45,7 @@ class _FormularioContatoState extends State<FormularioContato> {
                       final String nome = _nomeController.text;
                       final int numeroConta = int.parse(_numeroContaController.text);
 
-                      final Contato contato = Contato(nome, numeroConta);
+                      final Contato contato = Contato(0, nome, numeroConta);
                       Navigator.pop(context, contato);
                     },
                     child: const Text('SALVAR'),
