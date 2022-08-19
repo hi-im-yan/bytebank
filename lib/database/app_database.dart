@@ -3,45 +3,48 @@ import 'package:sqflite/sqflite.dart';
 
 import '../models/contato.dart';
 
-Future<Database> createDatabase() {
-  return getDatabasesPath().then((dbPath) {
-    final String path = join(dbPath, 'bytebank.db');
-    return openDatabase(
-      path,
-      onCreate: (db, version) {
-        db.execute('CREATE TABLE contatos('
-            'id INTEGER PRIMARY KEY, '
-            'nome TEXT, '
-            'numero_conta INTEGER)');
-      },
-      version: 1,
-      onDowngrade: onDatabaseDowngradeDelete,
+Future<Database> getDatabase() async {
+  final String dbpath = await getDatabasesPath();
+  final String path = join(dbpath, 'bytebank.db');
+  return openDatabase(
+    path,
+    onCreate: (db, version) {
+      db.execute('CREATE TABLE contatos('
+          'id INTEGER PRIMARY KEY, '
+          'nome TEXT, '
+          'numero_conta INTEGER)');
+    },
+    version: 1,
+    onDowngrade: onDatabaseDowngradeDelete,
+  );
+}
+
+Future<int> save(Contato contato) async {
+  final Database db = await getDatabase();
+  final Map<String, dynamic> mapaContato = Map();
+  mapaContato['nome'] = contato.nome;
+  mapaContato['numero_conta'] = contato.numeroConta;
+  return db.insert('contatos', mapaContato);
+
+  // return getDatabase().then((db) {
+  //   final Map<String, dynamic> mapaContato = Map();
+  //   mapaContato['nome'] = contato.nome;
+  //   mapaContato['numero_conta'] = contato.numeroConta;
+  //   return db.insert('contatos', mapaContato);
+  // });
+}
+
+Future<List<Contato>> findAll() async {
+  final Database db = await getDatabase();
+  final List<Map<String, dynamic>> registros = await db.query('contatos');
+  final List<Contato> contatos = [];
+  for (Map<String, dynamic> registro in registros) {
+    final Contato contato = Contato(
+      registro['id'],
+      registro['nome'],
+      registro['numero_conta'],
     );
-  });
-}
-
-Future<int> save(Contato contato) {
-  return createDatabase().then((db) {
-    final Map<String, dynamic> mapaContato = Map();
-    mapaContato['nome'] = contato.nome;
-    mapaContato['numero_conta'] = contato.numeroConta;
-    return db.insert('contatos', mapaContato);
-  });
-}
-
-Future<List<Contato>> findAll() {
-  return createDatabase().then((db) {
-    return db.query('contatos').then((maps) {
-      final List<Contato> contatos = [];
-      for (Map<String, dynamic> map in maps) {
-        final Contato contato = Contato(
-          map['id'],
-          map['nome'],
-          map['numero_conta'],
-        );
-        contatos.add(contato);
-      }
-      return contatos;
-    });
-  });
+    contatos.add(contato);
+  }
+  return contatos;
 }
