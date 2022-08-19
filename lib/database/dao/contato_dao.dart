@@ -11,9 +11,9 @@ class ContatoDAO {
   static const String _numeroConta = 'numero_conta';
 
   static const String tableSql = 'CREATE TABLE $_tableName('
-      'id INTEGER PRIMARY KEY, '
-      'nome TEXT, '
-      '_numeroConta INTEGER)';
+      '$_id INTEGER PRIMARY KEY, '
+      '$_nome TEXT, '
+      '$_numeroConta INTEGER)';
 
   Future<int> save(Contato contato) async {
     final Database db = await getDatabase();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../components/editor.dart';
-import '../models/transferencia.dart';
+import '../../components/editor.dart';
+import '../../models/transferencia.dart';
 
 const _tituloAppBar = 'Criando transferência';
 const _labelCampoValor = 'Valor da transferência';

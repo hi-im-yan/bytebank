@@ -2,7 +2,7 @@ import 'package:bytebank/components/editor.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:flutter/material.dart';
 
-import '../database/dao/contato_dao.dart';
+import '../../database/dao/contato_dao.dart';
 
 class FormularioContato extends StatefulWidget {
   const FormularioContato({Key? key}) : super(key: key);
@@ -44,15 +44,7 @@ class _FormularioContatoState extends State<FormularioContato> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    onPressed: () {
-                      final String nome = _nomeController.text;
-                      final int numeroConta = int.parse(_numeroContaController.text);
-
-                      final Contato contato = Contato(0, nome, numeroConta);
-                      _dao.save(contato).then((id) {
-                        Navigator.pop(context);
-                      });
-                    },
+                    onPressed: () => _saveContact(context),
                     child: const Text('SALVAR'),
                   ),
                 ),
@@ -62,5 +54,15 @@ class _FormularioContatoState extends State<FormularioContato> {
         ),
       ),
     );
+  }
+
+  void _saveContact(BuildContext context) {
+    final String nome = _nomeController.text;
+    final int numeroConta = int.parse(_numeroContaController.text);
+
+    final Contato contato = Contato(0, nome, numeroConta);
+    _dao.save(contato).then((id) {
+      Navigator.pop(context);
+    });
   }
 }

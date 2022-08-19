@@ -1,8 +1,9 @@
+import 'package:bytebank/components/loading.dart';
 import 'package:bytebank/models/contato.dart';
-import 'package:bytebank/screens/formulario_contato.dart';
+import 'package:bytebank/screens/contato/formulario_contato.dart';
 import 'package:flutter/material.dart';
 
-import '../database/dao/contato_dao.dart';
+import '../../database/dao/contato_dao.dart';
 
 class ListaContatos extends StatefulWidget {
   const ListaContatos({Key? key}) : super(key: key);
@@ -29,46 +30,45 @@ class _ListaContatosState extends State<ListaContatos> {
               break;
 
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text('Carregando')
-                  ],
-                ),
-              );
+              return Center(child: Loading());
 
             case ConnectionState.active:
               break;
 
             case ConnectionState.done:
-              List<Contato> contatos = snapshot.data;
-              return ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  final Contato contato = contatos[index];
-                  return _ItemContato(contato: contato);
-                },
-                itemCount: contatos.length,
-              );
+              return buildList(snapshot);
           }
           return const Text(
               'Erro desconhecido durante carregamento de contatos');
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const FormularioContato()),
-          ).then((value) {
-            setState(() {
-              //forçar atualização dos dados
-            });
-          });
-        },
+        onPressed: () => _goToContactForm(context),
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  void _goToContactForm(BuildContext context) {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(builder: (context) => const FormularioContato()),
+    )
+        .then((value) {
+      setState(() {
+        //forçar atualização dos dados
+      });
+    });
+  }
+
+  ListView buildList(AsyncSnapshot<dynamic> snapshot) {
+    List<Contato> contatos = snapshot.data;
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        final Contato contato = contatos[index];
+        return _ItemContato(contato: contato);
+      },
+      itemCount: contatos.length,
     );
   }
 }
