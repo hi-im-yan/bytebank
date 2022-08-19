@@ -3,7 +3,12 @@ import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
 import 'package:flutter/material.dart';
 
-class ListaContatos extends StatelessWidget {
+class ListaContatos extends StatefulWidget {
+  @override
+  State<ListaContatos> createState() => _ListaContatosState();
+}
+
+class _ListaContatosState extends State<ListaContatos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,9 +16,10 @@ class ListaContatos extends StatelessWidget {
         title: const Text('Contatos'),
       ),
       body: FutureBuilder<List<Contato>>(
-        future: Future.delayed(const Duration(seconds: 1)).then((value) => findAll()),
+        future: Future.delayed(const Duration(seconds: 1))
+            .then((value) => findAll()),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          switch(snapshot.connectionState) {
+          switch (snapshot.connectionState) {
             case ConnectionState.none:
               break;
 
@@ -42,19 +48,18 @@ class ListaContatos extends StatelessWidget {
                 itemCount: contatos.length,
               );
           }
-          return const Text('Erro desconhecido durante carregamento de contatos');
+          return const Text(
+              'Erro desconhecido durante carregamento de contatos');
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(
+          Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => FormularioContato()),
-          )
-              .then((contato) {
-            if (contato != null) {
-              debugPrint(contato.toString());
-            }
+          ).then((value) {
+            setState(() {
+              //forçar atualização dos dados
+            });
           });
         },
         child: const Icon(Icons.add),
