@@ -11,6 +11,8 @@ const _hintCampoConta = '0000';
 const _hintCampoValor = '0.00';
 
 class FormularioTransferencia extends StatefulWidget {
+  const FormularioTransferencia({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return FormularioTransferenciaState();

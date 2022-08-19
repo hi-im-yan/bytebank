@@ -8,14 +8,15 @@ class Editor extends StatelessWidget {
   final IconData? icon;
   final double? fontSize;
 
-  Editor({
+  const Editor({
+    Key? key,
     required this.controller,
     required this.label,
     required this.keyboarType,
     this.hint,
     this.icon,
     this.fontSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,9 @@ import 'formularo_transferencia.dart';
 const _tituloAppBar = 'Transferências';
 
 class ListaTransferencia extends StatefulWidget {
-  List<Transferencia> _transferencias = [];
+  final List<Transferencia> _transferencias = [];
+
+  ListaTransferencia({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -29,11 +31,11 @@ class ListaTransferenciaState extends State<ListaTransferencia> {
         },
       ),
       floatingActionButton: ElevatedButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           final Future future =
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return FormularioTransferencia();
+            return const FormularioTransferencia();
           }));
           future.then((transferenciaRecebida) {
             if (transferenciaRecebida != null) {
@@ -49,7 +51,7 @@ class ListaTransferenciaState extends State<ListaTransferencia> {
 class ItemTransferencia extends StatelessWidget {
   final Transferencia _transferencia;
 
-  ItemTransferencia(this._transferencia);
+  const ItemTransferencia(this._transferencia, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

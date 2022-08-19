@@ -1,14 +1,19 @@
-import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
 import 'package:flutter/material.dart';
 
+import '../database/dao/contato_dao.dart';
+
 class ListaContatos extends StatefulWidget {
+  const ListaContatos({Key? key}) : super(key: key);
+
   @override
   State<ListaContatos> createState() => _ListaContatosState();
 }
 
 class _ListaContatosState extends State<ListaContatos> {
+  final ContatoDAO _dao = ContatoDAO();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +22,7 @@ class _ListaContatosState extends State<ListaContatos> {
       ),
       body: FutureBuilder<List<Contato>>(
         future: Future.delayed(const Duration(seconds: 1))
-            .then((value) => findAll()),
+            .then((value) => _dao.findAll()),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -55,7 +60,7 @@ class _ListaContatosState extends State<ListaContatos> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => FormularioContato()),
+            MaterialPageRoute(builder: (context) => const FormularioContato()),
           ).then((value) {
             setState(() {
               //forçar atualização dos dados
@@ -79,10 +84,10 @@ class _ItemContato extends StatelessWidget {
       child: ListTile(
         title: Text(
           contato.nome,
-          style: TextStyle(fontSize: 24.0),
+          style: const TextStyle(fontSize: 24.0),
         ),
         subtitle: Text(contato.numeroConta.toString(),
-            style: TextStyle(fontSize: 16.0)),
+            style: const TextStyle(fontSize: 16.0)),
       ),
     );
   }
