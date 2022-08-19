@@ -1,7 +1,7 @@
 class Contato {
   final int id;
-  final String nome;
-  final int numeroConta;
+  String? nome;
+  int? numeroConta;
 
   Contato(this.id, this.nome, this.numeroConta,);
 

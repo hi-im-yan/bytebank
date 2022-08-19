@@ -1,5 +1,6 @@
 import 'package:bytebank/components/loading.dart';
 import 'package:bytebank/models/contato.dart';
+import 'package:bytebank/screens/contato/atualiza_contato.dart';
 import 'package:bytebank/screens/contato/formulario_contato.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +89,38 @@ class _ItemContato extends StatelessWidget {
         ),
         subtitle: Text(contato.numeroConta.toString(),
             style: const TextStyle(fontSize: 16.0)),
+        trailing: PopupMenuButton(
+          itemBuilder: (BuildContext context) {
+            return _itemMenuOptions();
+          },
+          onSelected: (option) {
+            switch (option) {
+              case 'update':
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AtualizaContato(
+                          contatoParaAtualizar: contato,
+                        )));
+                break;
+
+              case 'delete':
+                debugPrint('Deleting');
+            }
+          },
+        ),
       ),
     );
+  }
+
+  List<PopupMenuItem<dynamic>> _itemMenuOptions() {
+    return [
+      const PopupMenuItem(
+        value: 'update',
+        child: Text('update'),
+      ),
+      const PopupMenuItem(
+        value: 'delete',
+        child: Text('delete'),
+      ),
+    ];
   }
 }
