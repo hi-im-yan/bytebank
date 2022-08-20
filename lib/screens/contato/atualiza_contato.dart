@@ -45,8 +45,12 @@ class AtualizaContato extends StatelessWidget {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    onPressed: () => {
-                      contatoParaAtualizar.
+                    onPressed: () {
+                      contatoParaAtualizar.setNome(_nomeController.text);
+                      contatoParaAtualizar.setNumeroConta(int.parse(_numeroContaController.text));
+                      _dao.update(contatoParaAtualizar).then((id) {
+                        Navigator.pop(context);
+                      });
                     },
                     child: const Text('ATUALIZAR'),
                   ),

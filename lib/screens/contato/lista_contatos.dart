@@ -74,20 +74,25 @@ class _ListaContatosState extends State<ListaContatos> {
   }
 }
 
-class _ItemContato extends StatelessWidget {
+class _ItemContato extends StatefulWidget {
   final Contato contato;
 
   const _ItemContato({super.key, required this.contato});
 
   @override
+  State<_ItemContato> createState() => _ItemContatoState();
+}
+
+class _ItemContatoState extends State<_ItemContato> {
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         title: Text(
-          contato.nome,
+          widget.contato.getNome(),
           style: const TextStyle(fontSize: 24.0),
         ),
-        subtitle: Text(contato.numeroConta.toString(),
+        subtitle: Text(widget.contato.getNumeroConta().toString(),
             style: const TextStyle(fontSize: 16.0)),
         trailing: PopupMenuButton(
           itemBuilder: (BuildContext context) {
@@ -96,10 +101,14 @@ class _ItemContato extends StatelessWidget {
           onSelected: (option) {
             switch (option) {
               case 'update':
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AtualizaContato(
-                          contatoParaAtualizar: contato,
-                        )));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => AtualizaContato(
+                              contatoParaAtualizar: widget.contato,
+                            )))
+                    .then((value) {
+                  setState(() {});
+                });
                 break;
 
               case 'delete':
