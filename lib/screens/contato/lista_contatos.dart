@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../database/dao/contato_dao.dart';
 
+final ContatoDAO _dao = ContatoDAO();
+
 class ListaContatos extends StatefulWidget {
   const ListaContatos({Key? key}) : super(key: key);
 
@@ -14,8 +16,6 @@ class ListaContatos extends StatefulWidget {
 }
 
 class _ListaContatosState extends State<ListaContatos> {
-  final ContatoDAO _dao = ContatoDAO();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +84,12 @@ class _ItemContato extends StatefulWidget {
 }
 
 class _ItemContatoState extends State<_ItemContato> {
+  void _refreshJournals() async {
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -94,27 +100,36 @@ class _ItemContatoState extends State<_ItemContato> {
         ),
         subtitle: Text(widget.contato.getNumeroConta().toString(),
             style: const TextStyle(fontSize: 16.0)),
-        trailing: PopupMenuButton(
-          itemBuilder: (BuildContext context) {
-            return _itemMenuOptions();
-          },
-          onSelected: (option) {
-            switch (option) {
-              case 'update':
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
+        trailing: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return _itemMenuOptions();
+              },
+              onSelected: (option) {
+                switch (option) {
+                  case 'update':
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
                         builder: (context) => AtualizaContato(
-                              contatoParaAtualizar: widget.contato,
-                            )))
-                    .then((value) {
-                  setState(() {});
-                });
-                break;
+                          contatoParaAtualizar: widget.contato,
+                        )))
+                        .then((value) {
+                      setState(() {});
+                    });
+                    break;
 
-              case 'delete':
-                debugPrint('Deleting');
-            }
+                  case 'delete':
+                    _dao.delete(widget.contato).then((value) {
+                      setState(() {});
+                    });
+                    _refreshJournals();
+                    break;
+                }
+              },
+            );
           },
+
         ),
       ),
     );

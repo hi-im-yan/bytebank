@@ -39,6 +39,17 @@ class ContatoDAO {
     );
   }
 
+  Future<void> delete(Contato contato) async {
+    final Database db = await getDatabase();
+    print(contato.toString());
+    Map<String, dynamic> mapaContato = _toMap(contato);
+    await db.delete(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [contato.id],
+    );
+  }
+
   Map<String, dynamic> _toMap(Contato contato) {
     final Map<String, dynamic> mapaContato = {};
     mapaContato[_nome] = contato.nome;
