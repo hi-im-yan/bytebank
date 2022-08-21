@@ -8,7 +8,7 @@ class ListaContatos extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contatos'),
+        title: const Text('Transfer'),
       ),
       body: FutureBuilder<List<Contato>>(
         future: Future.delayed(const Duration(seconds: 1)).then((value) => findAll()),
