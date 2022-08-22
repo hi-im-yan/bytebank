@@ -1,3 +1,4 @@
+import 'package:bytebank/components/loading.dart';
 import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
@@ -18,16 +19,7 @@ class ListaContatos extends StatelessWidget {
               break;
 
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text('Carregando')
-                  ],
-                ),
-              );
+              return Loading();
 
             case ConnectionState.active:
               break;

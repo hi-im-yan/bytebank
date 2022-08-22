@@ -10,9 +10,6 @@ import 'database/app_database.dart';
 
 void main() {
   runApp(const BytebankApp());
-  // findAll().then((contatos) => debugPrint(contatos.toString()));
-  Webclient webclient = Webclient();
-  webclient.findAll();
 }
 
 class BytebankApp extends StatelessWidget {

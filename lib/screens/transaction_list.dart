@@ -1,9 +1,12 @@
+import 'package:bytebank/components/centered_message.dart';
+import 'package:bytebank/components/loading.dart';
+import 'package:bytebank/http/webclient.dart';
 import 'package:flutter/material.dart';
 
 import '../models/transaction.dart';
 
 class TransactionsList extends StatelessWidget {
-  final List<Transaction> transactions = [];
+  Webclient client = Webclient();
 
   @override
   Widget build(BuildContext context) {
@@ -11,31 +14,53 @@ class TransactionsList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Transactions'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final Transaction transaction = transactions[index];
-          return Card(
-            child: ListTile(
-              leading: Icon(Icons.monetization_on),
-              title: Text(
-                transaction.value.toString(),
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                transaction.contact.numeroConta.toString(),
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-          );
+      body: FutureBuilder<List<Transaction>>(
+        future: client.findAll(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Loading();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                final List<Transaction>? transactions = snapshot.data;
+
+                if (transactions!.isEmpty) {
+                  return CenteredMessage('No transactions found', icon: Icons.warning,);
+                }
+
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final Transaction transaction = transactions[index];
+                    return Card(
+                      child: ListTile(
+                        leading: Icon(Icons.monetization_on),
+                        title: Text(
+                          transaction.value.toString(),
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          transaction.contact.numeroConta.toString(),
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: transactions.length,
+                );
+              }
+          }
+          return CenteredMessage('Error to load transactions', icon: Icons.error,);
         },
-        itemCount: transactions.length,
       ),
     );
   }
 }
-
