@@ -1,3 +1,4 @@
+import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
@@ -9,7 +10,9 @@ import 'database/app_database.dart';
 
 void main() {
   runApp(const BytebankApp());
-  findAll().then((contatos) => debugPrint(contatos.toString()));
+  // findAll().then((contatos) => debugPrint(contatos.toString()));
+  Webclient webclient = Webclient();
+  webclient.findAll();
 }
 
 class BytebankApp extends StatelessWidget {
