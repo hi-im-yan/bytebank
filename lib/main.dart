@@ -1,5 +1,6 @@
 import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/contato.dart';
+import 'package:bytebank/models/transaction.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:bytebank/screens/formulario_contato.dart';
 import 'package:bytebank/screens/lista_contatos.dart';
@@ -10,6 +11,8 @@ import 'database/app_database.dart';
 
 void main() {
   runApp(const BytebankApp());
+  Webclient client = new Webclient();
+  client.save(Transaction(2000, Contato(0, 'yan', 1234)));
 }
 
 class BytebankApp extends StatelessWidget {
